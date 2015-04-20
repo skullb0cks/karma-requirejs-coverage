@@ -63,6 +63,25 @@ module.exports = function (grunt) {
                     singleRun: true
                 }
             }
+        },
+        makeReport : {
+            src : '',
+            options : {
+                type : ['lcov', 'cobertura'],
+                dir : 'coverage/',
+                print : 'detail'
+            }
         }
     });
+
+    grunt.loadNpmTasks('grunt-istanbul');
+    grunt.registerTask('test', ['karma:test']);
+    grunt.registerTask('report', '', function() {
+        var files = grunt.file.expand('coverage/**/*.json');
+        grunt.config.set('makeReport.src', files[files.length-1]);
+        grunt.task.run('makeReport');
+    });
+
 };
+
+
